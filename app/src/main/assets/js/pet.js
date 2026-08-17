@@ -242,40 +242,31 @@
         return '';
     }
 
-    // === 气泡（单行文字，超出自动跑马灯滚动） ===
+    // === 气泡（单一气泡 + 打字机逐字 + 单行不滚动） ===
     var bubbleTimer = null;
-
-    function escHtml(s) {
-        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
+    var typeTimer = null;
 
     function say(text, style) {
         if (!text) return;
         style = style || 'normal';
         clearTimeout(bubbleTimer);
+        clearInterval(typeTimer);
         bubbleEl.className = 'bubble ' + style;
+        bubbleTextEl.textContent = '';
 
-        // 单行显示：先直接塞文字测量
-        bubbleTextEl.innerHTML = escHtml(text);
-        bubbleTextEl.style.animation = 'none';
-        var needScroll = bubbleTextEl.scrollWidth > bubbleEl.clientWidth;
-
-        if (needScroll) {
-            // 跑马灯：复制两份无缝循环
-            bubbleTextEl.innerHTML =
-                '<span class="marquee-track">' +
-                '<span>' + escHtml(text) + '</span>' +
-                '<span>' + escHtml(text) + '</span>' +
-                '</span>';
-            var track = bubbleTextEl.firstChild;
-            // 速度：字越多滚动越快（每字约0.28s，总时长=文字宽/速度）
-            var duration = Math.max(4, text.length * 0.28);
-            track.style.animation = 'marquee ' + duration + 's linear infinite';
-        }
-
-        bubbleTimer = setTimeout(function () {
-            bubbleEl.classList.add('hidden');
-        }, 4200);
+        var i = 0;
+        // 打字机：每 55ms 蹦一个字，单行超出部分自然裁切
+        typeTimer = setInterval(function () {
+            if (i <= text.length) {
+                bubbleTextEl.textContent = text.slice(0, i);
+                i++;
+            } else {
+                clearInterval(typeTimer);
+                bubbleTimer = setTimeout(function () {
+                    bubbleEl.classList.add('hidden');
+                }, 3200);
+            }
+        }, 55);
     }
 
     // === 动作调度 ===

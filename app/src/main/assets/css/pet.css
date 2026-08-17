@@ -134,22 +134,6 @@ html, body {
     z-index: 10;
 }
 
-/* 跑马灯：单行文字横向循环滚动 */
-.bubble .marquee-track {
-    display: inline-flex;
-    will-change: transform;
-}
-
-.bubble .marquee-track > span {
-    white-space: nowrap;
-    padding-right: 24px;
-}
-
-@keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-
 .bubble.hidden {
     opacity: 0;
     pointer-events: none;
