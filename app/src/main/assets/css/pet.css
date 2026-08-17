@@ -25,8 +25,8 @@ html, body {
     position: absolute;
     bottom: 4px;
     left: 50%;
-    width: 130px;
-    height: 135px;
+    width: 110px;
+    height: 115px;
     transform: translateX(-50%);
     transform-origin: 50% 100%;
 }
@@ -109,14 +109,15 @@ html, body {
 /* === 气泡 === */
 .bubble {
     position: absolute;
-    top: 4px;
+    /* 贴近猫头顶：窗口高220px，猫高115px贴底 → 头顶约在101px */
+    top: 84px;
     left: 50%;
     transform: translateX(-50%);
-    max-width: 160px;
-    min-width: 50px;
-    padding: 7px 12px;
-    border-radius: 14px;
-    font-size: 13px;
+    max-width: 150px;
+    min-width: 48px;
+    padding: 6px 11px;
+    border-radius: 13px;
+    font-size: 12.5px;
     line-height: 1.35;
     text-align: center;
     /* 磨砂玻璃效果 */

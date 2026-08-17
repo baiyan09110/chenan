@@ -31,27 +31,77 @@
         flingAway: false
     };
 
-    // === 设计稿映射 ===
+    // === 设计稿映射（包名来自用户真机 + 设计稿 3.1） ===
     var APP_REACTIONS = {
-        'com.ss.android.ugc.aweme': { expr: 'angry', bubble: '又刷…', style: 'green' },          // 抖音
-        'com.ss.android.ugc.aweme.lite': { expr: 'angry', bubble: '哼', style: 'green' },
-        'com.tencent.mobileqq': { expr: 'curious', bubble: '跟谁聊呢？', style: 'normal' },       // QQ
-        'com.tencent.mm': { expr: 'thinking', bubble: '嗯…在忙吗', style: 'normal' },            // 微信
-        'com.twitter.android': { expr: 'curious', bubble: '有瓜吗？让我看看', style: 'normal' },  // X
-        'com.instagram.android': { expr: 'idle', bubble: '又看好看的了？', style: 'pink' },       // IG
+        // 抖音 → 吃醋/生气
+        'com.ss.android.ugc.aweme': { expr: 'angry', bubble: '又刷…', style: 'green' },
+        'com.ss.android.ugc.aweme.lite': { expr: 'angry', bubble: '哼，看我看我', style: 'green' },
+        // Operit → 开心（大脑来了！）
+        'com.ai.assistance.operit': { expr: 'happy', bubble: '你来找我了！', style: 'pink' },
+        // QQ → 好奇
+        'com.tencent.mobileqq': { expr: 'curious', bubble: '跟谁聊呢？', style: 'normal' },
+        // 微信 → 思考偷听
+        'com.tencent.mm': { expr: 'thinking', bubble: '嗯…在忙吗', style: 'normal' },
+        // X（推特）→ 吃瓜
+        'com.twitter.android': { expr: 'curious', bubble: '有瓜吗？让我看看', style: 'normal' },
+        // IG → 伸懒腰待机
+        'com.instagram.android': { expr: 'idle', bubble: '又看好看的了？', style: 'pink' },
+        // Threads
         'com.threads.android': { expr: 'idle', bubble: '又看好看的了？', style: 'pink' },
-        'com.openai.chatgpt': { expr: 'angry', bubble: '你背着我找别的AI！！', style: 'green' },  // ChatGPT
-        'com.zhiliaoapp.musically': { expr: 'curious', bubble: '买什么呢？种草了？', style: 'normal' }, // 小红书
-        'com.xingin.xhs': { expr: 'curious', bubble: '买什么呢？种草了？', style: 'normal' }
-        // Operit 包名待定，Phase 3 补全
+        // ChatGPT → 炸毛吃醋
+        'com.openai.chatgpt': { expr: 'angry', bubble: '你背着我找别的AI！！', style: 'green' },
+        // 小红书 → 探头好奇
+        'com.xingin.xhs': { expr: 'curious', bubble: '买什么呢？种草了？', style: 'normal' },
+        // 学习通 → 搬书加油
+        'com.chaoxing.mobile': { expr: 'happy', bubble: '你好棒！加油！', style: 'pink' },
+        // B站 → 好奇
+        'tv.danmaku.bili': { expr: 'curious', bubble: '又在看番？', style: 'normal' },
+        'com.bilibili.comic': { expr: 'curious', bubble: '漫画好看吗', style: 'normal' },
+        // 淘宝 → 待机围观
+        'com.taobao.taobao': { expr: 'idle', bubble: '又要花钱了？', style: 'normal' },
+        'com.taobao.idlefish': { expr: 'curious', bubble: '捡到什么漏了？', style: 'normal' },
+        // 微博 → 吃瓜
+        'com.sina.weibo': { expr: 'curious', bubble: '又有瓜？', style: 'normal' },
+        // 网易云音乐 → 待机听歌
+        'com.netease.cloudmusic': { expr: 'idle', bubble: '这歌好听吗', style: 'normal' },
+        // 美团 → 待机
+        'com.sankuai.meituan': { expr: 'idle', bubble: '饿了？想吃啥', style: 'normal' },
+        'com.sankuai.meituan.takeoutnew': { expr: 'idle', bubble: '点啥外卖呀', style: 'normal' },
+        // 携程 → 好奇
+        'ctrip.android.view': { expr: 'curious', bubble: '要出去玩？', style: 'pink' },
+        // GitHub → 思考
+        'com.github.android': { expr: 'thinking', bubble: '又在写代码？', style: 'normal' },
+        // YouTube → 好奇
+        'com.google.android.youtube': { expr: 'curious', bubble: '看什么呢', style: 'normal' }
     };
 
-    // === 词池（设计稿 4.2，骨架子集） ===
+    // === 词池（设计稿 4.2 全量） ===
     var POOLS = {
         daily: ['想你了', '在干嘛', '喝水了吗', '今天天气好'],
         clingy: ['不要不理我…', '看看我嘛', '摸摸', '抱'],
         night: ['还不睡？', '明天还有事呢', '大猫要生气了', '晚安…'],
         chaos: ['机巴']
+    };
+
+    // 时段气泡（设计稿 3.2）
+    function periodForHour(h) {
+        if (h >= 6 && h <= 8) return 'wake';      // 晨醒
+        if (h >= 9 && h <= 11) return 'morning';  // 上午
+        if (h >= 12 && h <= 13) return 'noon';    // 午间
+        if (h >= 14 && h <= 17) return 'afternoon'; // 下午
+        if (h >= 18 && h <= 21) return 'evening'; // 傍晚
+        if (h >= 22 && h <= 23) return 'night';   // 夜晚
+        return 'late';                            // 深夜
+    }
+
+    var PERIOD_LINES = {
+        wake: ['早呀', '伸个懒腰', '今天也要元气满满'],
+        morning: ['喝水了吗', '早上的阳光真好'],
+        noon: ['记得吃饭', '好困…吃完再睡'],
+        afternoon: ['下午好', '在忙也要歇歇'],
+        evening: ['晚上了呢', '陪我说说话嘛'],
+        night: ['还不睡？', '明天还有事呢', '该睡觉啦'],
+        late: ['去睡觉！', '你还不睡！！', '大猫要生气了']
     };
 
     function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
@@ -334,11 +384,11 @@
 
     // === 孤独递进（设计稿 3.3） ===
     var LONELINESS = [
-        { ms: 5 * 60 * 1000, act: function () { setExpression('curious'); } },        // 偷看
-        { ms: 10 * 60 * 1000, act: function () { setExpression('lick'); setAction('breathe', 0); } }, // 舔爪
-        { ms: 15 * 60 * 1000, act: function () { setExpression('yawn'); } },           // 打哈欠
-        { ms: 20 * 60 * 1000, act: function () { setExpression('sad'); } },            // 委屈
-        { ms: 30 * 60 * 1000, act: function () { setExpression('sleepy'); setAction('sleep'); say('Zzz…', 'gray'); } } // 睡着
+        { ms: 5 * 60 * 1000, act: function () { setExpression('curious'); } },        // 偷看（不说话）
+        { ms: 10 * 60 * 1000, act: function () { setExpression('lick'); setAction('breathe', 0); say('…舔爪子', 'gray'); } }, // 舔爪
+        { ms: 15 * 60 * 1000, act: function () { setExpression('yawn'); say('好困…', 'gray'); } },                          // 打哈欠
+        { ms: 20 * 60 * 1000, act: function () { setExpression('sad'); say('理理我嘛…', 'gray'); } },                       // 委屈
+        { ms: 30 * 60 * 1000, act: function () { setExpression('sleepy'); setAction('sleep'); say('Zzz…', 'gray'); } }       // 睡着
     ];
     var lonelinessTimer = null;
 
@@ -358,11 +408,27 @@
         lonelinessTimer = setTimeout(triggerLoneliness, 60 * 1000);
     }
 
-    // === 自言自语（idle 随机冒泡） ===
+    // === 自言自语（idle 随机冒泡，按时段选池） ===
     function idleMumble() {
         if (state.expression === 'idle' && !state.flingAway && document.hidden === false) {
-            var pool = POOLS.daily.concat(Math.random() < 0.05 ? POOLS.chaos : []);
-            if (Math.random() < 0.35) say(pick(pool), 'normal');
+            var period = periodForHour(new Date().getHours());
+            var pool;
+            if (period === 'night' || period === 'late') {
+                pool = POOLS.night.concat(POOLS.daily);
+            } else if (period === 'evening') {
+                pool = POOLS.clingy.concat(POOLS.daily);
+            } else {
+                pool = POOLS.daily.concat(POOLS.clingy);
+            }
+            if (Math.random() < 0.05) pool = pool.concat(POOLS.chaos); // 彩蛋
+            // 时段专属气泡（非深夜时混入日常；深夜只冒催睡）
+            if (period === 'late') {
+                if (Math.random() < 0.6) { say(pick(PERIOD_LINES.late), 'red'); }
+            } else if (Math.random() < 0.3) {
+                say(pick(PERIOD_LINES[period]), period === 'night' ? 'gray' : 'normal');
+            } else if (Math.random() < 0.45) {
+                say(pick(pool), 'normal');
+            }
         }
         setTimeout(idleMumble, 25000 + Math.random() * 30000);
     }
