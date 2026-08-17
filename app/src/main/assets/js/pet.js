@@ -242,18 +242,31 @@
         return '';
     }
 
-    // === 气泡 ===
+    // === 气泡（打字机逐字效果） ===
     var bubbleTimer = null;
+    var typeTimer = null;
 
     function say(text, style) {
         if (!text) return;
         style = style || 'normal';
-        bubbleTextEl.textContent = text;
-        bubbleEl.className = 'bubble ' + style;
         clearTimeout(bubbleTimer);
-        bubbleTimer = setTimeout(function () {
-            bubbleEl.classList.add('hidden');
-        }, 4000);
+        clearInterval(typeTimer);
+        bubbleEl.className = 'bubble ' + style;
+        bubbleTextEl.textContent = '';
+        var i = 0;
+        // 打字机：每 40ms 蹦一个字，文字多时从气泡内向上滚动
+        typeTimer = setInterval(function () {
+            if (i <= text.length) {
+                bubbleTextEl.textContent = text.slice(0, i);
+                i++;
+                bubbleEl.scrollTop = bubbleEl.scrollHeight;
+            } else {
+                clearInterval(typeTimer);
+                bubbleTimer = setTimeout(function () {
+                    bubbleEl.classList.add('hidden');
+                }, 3500);
+            }
+        }, 40);
     }
 
     // === 动作调度 ===
