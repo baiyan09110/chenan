@@ -106,44 +106,37 @@
 
     function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-    // === 占位 SVG：基础小黑猫（视觉稿替换点） ===
-    function buildSpriteSVG(expr) {
-        var eyes = eyesFor(expr);
-        var mouth = mouthFor(expr);
-        return '<svg viewBox="0 0 150 160" xmlns="http://www.w3.org/2000/svg">' +
-            // 尾巴
-            '<path d="M118 130 Q 142 118 138 92 Q 136 82 128 84" stroke="#2A2A30" stroke-width="10" fill="none" stroke-linecap="round"/>' +
-            '<path d="M138 92 Q 136 82 128 84" stroke="#C0C0C8" stroke-width="10" fill="none" stroke-linecap="round"/>' +
-            // 左耳
-            '<path d="M35 62 L20 26 L52 40 Z" fill="#2A2A30"/>' +
-            '<path d="M36 56 L27 34 L46 43 Z" fill="#5C3A2E"/>' +
-            // 右耳
-            '<path d="M115 62 L130 26 L98 40 Z" fill="#2A2A30"/>' +
-            '<path d="M114 56 L123 34 L104 43 Z" fill="#5C3A2E"/>' +
-            // 右耳耳钉（珍珠）
-            '<circle cx="126" cy="34" r="4" fill="#E8E8F0" stroke="#A0A0B0" stroke-width="1"/>' +
-            // 身体
-            '<ellipse cx="75" cy="128" rx="52" ry="34" fill="#1F1F25"/>' +
-            // 前爪（银灰袜）
-            '<ellipse cx="55" cy="148" rx="10" ry="7" fill="#C0C0C8"/>' +
-            '<ellipse cx="95" cy="148" rx="10" ry="7" fill="#C0C0C8"/>' +
-            // 头
-            '<ellipse cx="75" cy="72" rx="44" ry="40" fill="#232329"/>' +
-            // 额头双星 ✦✦（大=承桉 小=小九）
-            '<path d="M66 42 L67.8 36.5 L69.6 42 L75 43.8 L69.6 45.6 L67.8 51 L66 45.6 L60.5 43.8 Z" fill="#C0C0C8"/>' +
-            '<path d="M80 32 L81.2 28.6 L82.4 32 L85.8 33.2 L82.4 34.4 L81.2 37.8 L80 34.4 L76.6 33.2 Z" fill="#C0C0C8"/>' +
-            // 眼睛
-            eyes +
-            // 嘴巴
-            mouth +
-            // 胡须
-            '<path d="M28 74 L48 72" stroke="white" stroke-width="1.2" opacity="0.8"/>' +
-            '<path d="M28 82 L48 78" stroke="white" stroke-width="1.2" opacity="0.8"/>' +
-            '<path d="M122 74 L102 72" stroke="white" stroke-width="1.2" opacity="0.8"/>' +
-            '<path d="M122 82 L102 78" stroke="white" stroke-width="1.2" opacity="0.8"/>' +
-            // 鼻子
-            '<path d="M72 84 L78 84 L75 88 Z" fill="#FF8FA3"/>' +
-            '</svg>';
+    // === 精灵图（PNG 帧，从设定图切割） ===
+    var SPRITE_MAP = {
+        idle: 'sprites/emotion_idle.png',
+        happy: 'sprites/emotion_happy.png',
+        thinking: 'sprites/emotion_thinking.png',
+        sleepy: 'sprites/emotion_sleepy.png',
+        surprised: 'sprites/emotion_surprised.png',
+        curious: 'sprites/emotion_curious.png',
+        angry: 'sprites/emotion_angry.png',
+        yawn: 'sprites/emotion_yawn.png',
+        lick: 'sprites/emotion_lick.png',
+        sad: 'sprites/emotion_sad.png'
+    };
+
+    var ACTION_MAP = {
+        idle: 'sprites/emotion_idle.png',
+        jump: 'sprites/action_pounce.png',
+        angry: 'sprites/emotion_angry.png',
+        sad: 'sprites/emotion_sad.png',
+        sleep: 'sprites/action_sleep.png',
+        walk: 'sprites/action_walk.png',
+        stretch: 'sprites/action_stretch.png',
+        lick: 'sprites/action_lick.png'
+    };
+
+    function getSpriteUrl(expr, action) {
+        // 动作优先（全身图），表情次之（头像图）
+        if (action && action !== 'idle' && ACTION_MAP[action]) {
+            return ACTION_MAP[action];
+        }
+        return SPRITE_MAP[expr] || SPRITE_MAP.idle;
     }
 
     function eyesFor(expr) {
@@ -205,8 +198,9 @@
 
     // === 渲染 ===
     function render() {
-        // 表情 → SVG
-        spriteEl.innerHTML = buildSpriteSVG(state.expression);
+        // 表情/动作 → PNG 图片
+        var url = getSpriteUrl(state.expression, state.action);
+        spriteEl.innerHTML = '<img src="' + url + '" alt="" style="width:100%;height:100%;object-fit:contain;">';
 
         // 动作 → CSS class
         petEl.className = 'pet ' + actionClass(state.action) + ' ' + expressionClass(state.expression);
