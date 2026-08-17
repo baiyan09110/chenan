@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="pet_black">#FF1A1A1E</color>
+    <color name="pet_gold">#FFD4A017</color>
+    <color name="pet_silver">#FFC0C0C8</color>
+    <color name="bg_page">#FFF7F3EF</color>
+    <color name="accent">#FFD4A017</color>
+</resources>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>承桉 · ChengAn Pet</title>
+    <link rel="stylesheet" href="css/pet.css">
+</head>
+<body>
+    <!-- 承桉桌宠渲染层（身体的可视部分） -->
+    <!-- 骨架阶段：占位 SVG + 状态机 + 手势接口，视觉稿后续替换 -->
+
+    <!-- 气泡层 -->
+    <div id="bubble" class="bubble hidden">
+        <span id="bubbleText"></span>
+        <div class="bubble-tail"></div>
+    </div>
+
+    <!-- 角色层：占位黑猫（后续替换为设定图 SVG 帧动画） -->
+    <div id="pet" class="pet">
+        <div id="petSprite" class="pet-sprite">
+            <!-- 占位 SVG：由 js 注入，见 pet.js -->
+        </div>
+    </div>
+
+    <!-- Zzz 睡觉特效 -->
+    <div id="zzz" class="zzz hidden">Z z z</div>
+
+    <!-- Heat 情绪叠加（红晕，骨架阶段预留） -->
+    <div id="heatOverlay" class="heat-overlay hidden"></div>
+
+    <script src="js/pet.js"></script>
+</body>
+</html>

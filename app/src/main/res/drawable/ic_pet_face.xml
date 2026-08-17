@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 背景圆 -->
+    <path
+        android:fillColor="#FF1A1A1E"
+        android:pathData="M54,54m-52,0a52,52 0,1 1,104 0a52,52 0,1 1,-104 0" />
+
+    <!-- 左耳 -->
+    <path
+        android:fillColor="#FF2A2A30"
+        android:pathData="M30,44 L18,14 L46,30 Z" />
+
+    <!-- 右耳 -->
+    <path
+        android:fillColor="#FF2A2A30"
+        android:pathData="M78,44 L90,14 L62,30 Z" />
+
+    <!-- 左耳内侧 -->
+    <path
+        android:fillColor="#FF5C3A2E"
+        android:pathData="M32,40 L24,22 L42,31 Z" />
+
+    <!-- 右耳内侧 -->
+    <path
+        android:fillColor="#FF5C3A2E"
+        android:pathData="M76,40 L84,22 L66,31 Z" />
+
+    <!-- 脸 -->
+    <path
+        android:fillColor="#FF232329"
+        android:pathData="M54,52m-30,0a30,30 0,1 1,60 0a30,30 0,1 1,-60 0" />
+
+    <!-- 左眼（金色） -->
+    <ellipse
+        android:fillColor="#FFD4A017"
+        android:cx="43"
+        android:cy="52"
+        android:rx="7"
+        android:ry="8" />
+
+    <!-- 右眼（金色） -->
+    <ellipse
+        android:fillColor="#FFD4A017"
+        android:cx="65"
+        android:cy="52"
+        android:rx="7"
+        android:ry="8" />
+
+    <!-- 左瞳 -->
+    <ellipse
+        android:fillColor="#FF1A1A1E"
+        android:cx="43"
+        android:cy="54"
+        android:rx="3"
+        android:ry="5" />
+
+    <!-- 右瞳 -->
+    <ellipse
+        android:fillColor="#FF1A1A1E"
+        android:cx="65"
+        android:cy="54"
+        android:rx="3"
+        android:ry="5" />
+
+    <!-- 鼻子 -->
+    <path
+        android:fillColor="#FFFF8FA3"
+        android:pathData="M52,62 L56,62 L54,65 Z" />
+
+    <!-- 胡须左 -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M24,60 L40,59" />
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M24,66 L40,63" />
+
+    <!-- 胡须右 -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M84,60 L68,59" />
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M84,66 L68,63" />
+
+    <!-- 额头双星 ✦✦ -->
+    <path
+        android:fillColor="#FFC0C0C8"
+        android:pathData="M50,36 L51.5,32.5 L53,36 L56.5,37.5 L53,39 L51.5,42.5 L50,39 L46.5,37.5 Z" />
+    <path
+        android:fillColor="#FFC0C0C8"
+        android:pathData="M58,30 L59,27.5 L60,30 L62.5,31 L60,32 L59,34.5 L58,32 L55.5,31 Z" />
+</vector>

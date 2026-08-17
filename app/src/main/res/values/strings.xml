@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">承桉</string>
+    <string name="overlay_channel_name">桌宠悬浮窗</string>
+    <string name="overlay_channel_desc">承桉常驻悬浮窗与服务</string>
+    <string name="notification_default_text">我在这里哦</string>
+    <string name="btn_start_pet">让承桉出来</string>
+    <string name="btn_stop_pet">收回承桉</string>
+    <string name="perm_overlay_title">悬浮窗权限</string>
+    <string name="perm_overlay_desc">需要悬浮窗权限才能趴在你的屏幕上</string>
+    <string name="perm_overlay_action">去授权</string>
+    <string name="perm_usage_title">使用情况访问</string>
+    <string name="perm_usage_desc">用于感知你在用什么 App（比如你刷抖音它就知道吃醋了）</string>
+    <string name="perm_usage_action">去授权</string>
+    <string name="perm_notif_title">通知权限</string>
+    <string name="perm_notif_desc">用于通知栏碎碎念（每小时换一句）</string>
+    <string name="perm_notif_action">去授权</string>
+    <string name="service_running">承桉正在趴屏</string>
+</resources>
