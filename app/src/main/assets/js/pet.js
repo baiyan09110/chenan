@@ -242,31 +242,40 @@
         return '';
     }
 
-    // === 气泡（打字机逐字效果） ===
+    // === 气泡（单行文字，超出自动跑马灯滚动） ===
     var bubbleTimer = null;
-    var typeTimer = null;
+
+    function escHtml(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
 
     function say(text, style) {
         if (!text) return;
         style = style || 'normal';
         clearTimeout(bubbleTimer);
-        clearInterval(typeTimer);
         bubbleEl.className = 'bubble ' + style;
-        bubbleTextEl.textContent = '';
-        var i = 0;
-        // 打字机：每 40ms 蹦一个字，文字多时从气泡内向上滚动
-        typeTimer = setInterval(function () {
-            if (i <= text.length) {
-                bubbleTextEl.textContent = text.slice(0, i);
-                i++;
-                bubbleEl.scrollTop = bubbleEl.scrollHeight;
-            } else {
-                clearInterval(typeTimer);
-                bubbleTimer = setTimeout(function () {
-                    bubbleEl.classList.add('hidden');
-                }, 3500);
-            }
-        }, 40);
+
+        // 单行显示：先直接塞文字测量
+        bubbleTextEl.innerHTML = escHtml(text);
+        bubbleTextEl.style.animation = 'none';
+        var needScroll = bubbleTextEl.scrollWidth > bubbleEl.clientWidth;
+
+        if (needScroll) {
+            // 跑马灯：复制两份无缝循环
+            bubbleTextEl.innerHTML =
+                '<span class="marquee-track">' +
+                '<span>' + escHtml(text) + '</span>' +
+                '<span>' + escHtml(text) + '</span>' +
+                '</span>';
+            var track = bubbleTextEl.firstChild;
+            // 速度：字越多滚动越快（每字约0.28s，总时长=文字宽/速度）
+            var duration = Math.max(4, text.length * 0.28);
+            track.style.animation = 'marquee ' + duration + 's linear infinite';
+        }
+
+        bubbleTimer = setTimeout(function () {
+            bubbleEl.classList.add('hidden');
+        }, 4200);
     }
 
     // === 动作调度 ===

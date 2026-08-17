@@ -109,19 +109,19 @@ html, body {
 /* === 气泡 === */
 .bubble {
     position: absolute;
-    /* 贴头顶向上生长：猫头顶约在101px处，气泡底部固定其上方 */
+    /* 贴头顶：猫头顶约在101px处，气泡底部固定其上方 */
     bottom: 112px;
     left: 50%;
     transform: translateX(-50%);
     max-width: 150px;
-    max-height: 96px;
-    overflow-y: auto;
     min-width: 48px;
     padding: 6px 11px;
     border-radius: 13px;
     font-size: 12.5px;
-    line-height: 1.35;
+    line-height: 1.3;
     text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
     /* 磨砂玻璃效果 */
     background: rgba(255, 255, 255, 0.55);
     -webkit-backdrop-filter: blur(12px) saturate(1.4);
@@ -131,8 +131,23 @@ html, body {
     box-shadow: 0 2px 12px rgba(0,0,0,0.08), inset 0 0.5px 0 rgba(255,255,255,0.7);
     opacity: 1;
     transition: opacity 0.25s;
-    word-break: break-all;
     z-index: 10;
+}
+
+/* 跑马灯：单行文字横向循环滚动 */
+.bubble .marquee-track {
+    display: inline-flex;
+    will-change: transform;
+}
+
+.bubble .marquee-track > span {
+    white-space: nowrap;
+    padding-right: 24px;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
 .bubble.hidden {
