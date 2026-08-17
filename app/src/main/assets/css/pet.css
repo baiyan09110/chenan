@@ -139,17 +139,7 @@ html, body {
 }
 
 .bubble-tail {
-    position: absolute;
-    bottom: -6px;
-    left: 50%;
-    width: 10px;
-    height: 10px;
-    background: rgba(255,255,255,0.55);
-    border-right: 1px solid rgba(255,255,255,0.6);
-    border-bottom: 1px solid rgba(255,255,255,0.6);
-    transform: translateX(-50%) rotate(45deg);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
+    display: none; /* 按用户要求：不要气泡下角 */
 }
 
 /* 气泡风格（设计稿 4.1）— 磨砂玻璃变体 */
