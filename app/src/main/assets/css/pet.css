@@ -109,11 +109,13 @@ html, body {
 /* === 气泡 === */
 .bubble {
     position: absolute;
-    /* 贴近猫头顶：窗口高220px，猫高115px贴底 → 头顶约在101px */
-    top: 84px;
+    /* 贴头顶向上生长：猫头顶约在101px处，气泡底部固定其上方 */
+    bottom: 112px;
     left: 50%;
     transform: translateX(-50%);
     max-width: 150px;
+    max-height: 96px;
+    overflow-y: auto;
     min-width: 48px;
     padding: 6px 11px;
     border-radius: 13px;
