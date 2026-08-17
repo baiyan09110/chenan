@@ -36,36 +36,24 @@
         android:pathData="M54,52m-30,0a30,30 0,1 1,60 0a30,30 0,1 1,-60 0" />
 
     <!-- 左眼（金色） -->
-    <ellipse
+    <path
         android:fillColor="#FFD4A017"
-        android:cx="43"
-        android:cy="52"
-        android:rx="7"
-        android:ry="8" />
+        android:pathData="M36,52 A7,8 0 1 0 50,52 A7,8 0 1 0 36,52 Z" />
 
     <!-- 右眼（金色） -->
-    <ellipse
+    <path
         android:fillColor="#FFD4A017"
-        android:cx="65"
-        android:cy="52"
-        android:rx="7"
-        android:ry="8" />
+        android:pathData="M58,52 A7,8 0 1 0 72,52 A7,8 0 1 0 58,52 Z" />
 
     <!-- 左瞳 -->
-    <ellipse
+    <path
         android:fillColor="#FF1A1A1E"
-        android:cx="43"
-        android:cy="54"
-        android:rx="3"
-        android:ry="5" />
+        android:pathData="M40,54 A3,5 0 1 0 46,54 A3,5 0 1 0 40,54 Z" />
 
     <!-- 右瞳 -->
-    <ellipse
+    <path
         android:fillColor="#FF1A1A1E"
-        android:cx="65"
-        android:cy="54"
-        android:rx="3"
-        android:ry="5" />
+        android:pathData="M62,54 A3,5 0 1 0 68,54 A3,5 0 1 0 62,54 Z" />
 
     <!-- 鼻子 -->
     <path
