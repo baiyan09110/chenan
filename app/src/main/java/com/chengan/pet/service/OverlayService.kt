@@ -95,7 +95,8 @@ class OverlayService : Service() {
 
     // === 悬浮窗 ===
     private fun setupOverlay() {
-        windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+        try {
+            windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         params = WindowManager.LayoutParams(
             dpToPx(PET_SIZE_DP),
             dpToPx(PET_HEIGHT_DP),
@@ -123,6 +124,11 @@ class OverlayService : Service() {
         }
         windowManager?.addView(overlayView, params)
         Log.d(TAG, "悬浮窗已创建")
+    } catch (e: Exception) {
+        Log.e(TAG, "悬浮窗创建失败: ${e.message}", e)
+        overlayView = null
+        stopSelf()
+    }
     }
 
     // === 传感器 ===
@@ -133,13 +139,18 @@ class OverlayService : Service() {
             sync?.reportEvent(SupabaseSync.PetEvent("app_change", pkg))
         }.also { it.start() }
 
-        // 监听常见截图目录；骨架阶段取 DCIM/Screenshots
+        // 监听常见截图目录；骨架阶段取 DCIM/Screenshots，目录不存在时静默跳过
         val screenshotsDir = "${android.os.Environment.getExternalStorageDirectory()}/DCIM/Screenshots"
-        screenshotDetector = ScreenshotDetector(screenshotsDir) {
-            Log.d(TAG, "截图啦")
-            pushToJs("onScreenshot()")
-            sync?.reportEvent(SupabaseSync.PetEvent("screenshot", "screenshot"))
-        }.also { it.start() }
+        screenshotDetector = try {
+            ScreenshotDetector(screenshotsDir) {
+                Log.d(TAG, "截图啦")
+                pushToJs("onScreenshot()")
+                sync?.reportEvent(SupabaseSync.PetEvent("screenshot", "screenshot"))
+            }.also { it.start() }
+        } catch (e: Exception) {
+            Log.w(TAG, "截图监听启动失败（目录不存在？）: ${e.message}")
+            null
+        }
 
         batteryMonitor = BatteryMonitor(
             this,
