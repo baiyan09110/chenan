@@ -39,8 +39,8 @@ class OverlayService : Service() {
 
     companion object {
         private const val TAG = "OverlayService"
-        private const val PET_SIZE_DP = 200
-        private const val PET_HEIGHT_DP = 260
+        private const val PET_SIZE_DP = 160
+        private const val PET_HEIGHT_DP = 220
 
         /** 连戳判定窗口（毫秒） */
         private const val TAP_WINDOW_MS = 250L
