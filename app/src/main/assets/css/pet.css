@@ -106,6 +106,16 @@ html, body {
     50% { transform: translateX(6px) rotate(2deg); }
 }
 
+/* 露肚皮（呼噜呼噜） */
+.pet.belly .pet-sprite {
+    animation: bellyBreathe 1.6s ease-in-out infinite;
+}
+
+@keyframes bellyBreathe {
+    0%, 100% { transform: scale(1) rotate(-1deg); }
+    50% { transform: scale(1.04) rotate(1deg); }
+}
+
 /* === 气泡 === */
 .bubble {
     position: absolute;

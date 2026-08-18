@@ -106,7 +106,7 @@
 
     function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-    // === 精灵图（PNG 帧，从设定图切割） ===
+    // === 精灵图（PNG 帧） ===
     var SPRITE_MAP = {
         idle: 'sprites/emotion_idle.png',
         happy: 'sprites/emotion_happy.png',
@@ -120,23 +120,35 @@
         sad: 'sprites/emotion_sad.png'
     };
 
-    var ACTION_MAP = {
-        idle: 'sprites/emotion_idle.png',
-        jump: 'sprites/action_pounce.png',
-        angry: 'sprites/emotion_angry.png',
-        sad: 'sprites/emotion_sad.png',
-        sleep: 'sprites/action_sleep.png',
-        walk: 'sprites/action_walk.png',
-        stretch: 'sprites/action_stretch.png',
-        lick: 'sprites/action_lick.png'
+    // 多帧动作（帧序列 + 每帧间隔 ms）
+    var ACTION_FRAMES = {
+        lick:    { frames: ['sprites/action_lick_1.png', 'sprites/action_lick_2.png', 'sprites/action_lick_3.png'], interval: 350 },
+        walk:    { frames: ['sprites/action_walk_1.png', 'sprites/action_walk_2.png'], interval: 300 },
+        stretch: { frames: ['sprites/action_stretch_1.png', 'sprites/action_stretch_2.png'], interval: 450 },
+        sleep:   { frames: ['sprites/action_sleep_1.png', 'sprites/action_sleep_2.png'], interval: 900 },
+        belly:   { frames: ['sprites/action_belly.png'], interval: 500 }
     };
 
+    // 帧循环状态
+    var frameTimer = null;
+    var frameIdx = 0;
+    var currentFrames = null;
+
     function getSpriteUrl(expr, action) {
-        // 动作优先（全身图），表情次之（头像图）
-        if (action && action !== 'idle' && ACTION_MAP[action]) {
-            return ACTION_MAP[action];
-        }
+        // 有帧序列的动作用第一帧，否则用表情图
+        if (currentFrames) return currentFrames[0];
+        if (action === 'jump') return SPRITE_MAP.happy; // 跳跃暂用开心图（缺素材）
         return SPRITE_MAP[expr] || SPRITE_MAP.idle;
+    }
+
+    function renderSprite(url) {
+        spriteEl.innerHTML = '<img src="' + url + '" alt="" style="width:100%;height:100%;object-fit:contain;">';
+    }
+
+    function stopFrameLoop() {
+        if (frameTimer) { clearInterval(frameTimer); frameTimer = null; }
+        currentFrames = null;
+        frameIdx = 0;
     }
 
     function eyesFor(expr) {
@@ -200,7 +212,7 @@
     function render() {
         // 表情/动作 → PNG 图片
         var url = getSpriteUrl(state.expression, state.action);
-        spriteEl.innerHTML = '<img src="' + url + '" alt="" style="width:100%;height:100%;object-fit:contain;">';
+        renderSprite(url);
 
         // 动作 → CSS class
         petEl.className = 'pet ' + actionClass(state.action) + ' ' + expressionClass(state.expression);
@@ -225,6 +237,8 @@
             case 'sleep': return 'sleep';
             case 'walk': return 'walk';
             case 'stretch': return 'breathe';
+            case 'belly': return 'belly';
+            case 'lick': return 'breathe';
             default: return 'breathe';
         }
     }
@@ -263,7 +277,7 @@
         }, 55);
     }
 
-    // === 动作调度 ===
+    // === 动作调度（支持多帧循环） ===
     function setExpression(expr) {
         state.expression = expr;
         render();
@@ -271,11 +285,28 @@
 
     function setAction(action, durationMs) {
         state.action = action;
-        render();
+        stopFrameLoop();
+
+        if (ACTION_FRAMES[action]) {
+            // 多帧动作：启动帧循环
+            currentFrames = ACTION_FRAMES[action].frames;
+            frameIdx = 0;
+            renderSprite(currentFrames[0]);
+            frameTimer = setInterval(function () {
+                frameIdx = (frameIdx + 1) % currentFrames.length;
+                renderSprite(currentFrames[frameIdx]);
+            }, ACTION_FRAMES[action].interval);
+        } else {
+            render();
+        }
+
+        petEl.className = 'pet ' + actionClass(action) + ' ' + expressionClass(state.expression);
+
         if (durationMs) {
             setTimeout(function () {
                 if (state.action === action) {
                     state.action = 'idle';
+                    stopFrameLoop();
                     render();
                 }
             }, durationMs);
@@ -310,12 +341,8 @@
         resetLoneliness();
         setExpression('happy');
         say('呼噜呼噜…', 'pink');
-        // 露肚皮：骨架阶段用躺平动画占位
-        petEl.style.transform = 'translateX(-50%) rotate(90deg) scale(0.9)';
-        setTimeout(function () {
-            petEl.style.transform = '';
-            setExpression('idle');
-        }, 1800);
+        // 露肚皮：使用翻肚皮真实素材
+        setAction('belly', 2200);
     }
 
     function onFling(vx, vy) {
@@ -392,7 +419,7 @@
     // === 孤独递进（设计稿 3.3） ===
     var LONELINESS = [
         { ms: 5 * 60 * 1000, act: function () { setExpression('curious'); } },        // 偷看（不说话）
-        { ms: 10 * 60 * 1000, act: function () { setExpression('lick'); setAction('breathe', 0); say('…舔爪子', 'gray'); } }, // 舔爪
+        { ms: 10 * 60 * 1000, act: function () { setExpression('lick'); setAction('lick', 0); say('…舔爪子', 'gray'); } }, // 舔爪（帧动画）
         { ms: 15 * 60 * 1000, act: function () { setExpression('yawn'); say('好困…', 'gray'); } },                          // 打哈欠
         { ms: 20 * 60 * 1000, act: function () { setExpression('sad'); say('理理我嘛…', 'gray'); } },                       // 委屈
         { ms: 30 * 60 * 1000, act: function () { setExpression('sleepy'); setAction('sleep'); say('Zzz…', 'gray'); } }       // 睡着
