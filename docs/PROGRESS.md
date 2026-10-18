@@ -1,87 +1,97 @@
-# 🐈‍⬛ 承桉桌宠（ChengAn Pet）项目进度报告
+# ChengAn Pet — Progress Report
 
-> 日期：2026.08.17
-> 架构参考：[AI-Live-Overflow](https://github.com/Vael-KY/AI-Live-Overflow)（CC BY-NC-SA 4.0）
-> 代码仓库：https://github.com/baiyan09110/chenan
-
----
-
-## 一、项目是什么
-
-一个 Android 悬浮窗 AI 桌宠：小黑猫「承桉」趴在手机屏幕上，能感知你在用什么 App、被戳有反应、按时间段说话、孤独了会睡觉。
-
-**核心理念：大脑和身体分离**
-- 大脑 = Operit 里的承桉（记忆/人格/情绪）
-- 身体 = 悬浮窗上的小黑猫（显示/感知/被控制）
-- 通信 = Supabase Realtime（未来）
+> Date: 2026-08-17  
+> Architecture reference: [AI-Live-Overflow](https://github.com/Vael-KY/AI-Live-Overflow) (CC BY-NC-SA 4.0)  
+> Repository: https://github.com/baiyan09110/chenan
 
 ---
 
-## 二、已完成 ✅
+## 1. Project overview
 
-### 1. 工程骨架（Phase 1）
-- [x] Android 工程搭建（Kotlin + Gradle + AGP 8.2.2，minSdk 26 / targetSdk 34）
-- [x] 悬浮窗前台服务（透明 WebView 渲染，可拖拽）
-- [x] 权限引导页（悬浮窗 / 使用情况访问 / 通知）
-- [x] 常驻通知 + 通知栏碎碎念（每小时换一句）
-- [x] GitHub Actions 自动构建（push 即出 debug APK）
+An Android floating-window AI desktop pet: a small black cat that can detect the foreground app, react to touch, speak according to time-of-day, and sleep when it becomes lonely.
 
-### 2. 角色引擎（Phase 2 前置）
-- [x] 宠物引擎 petEngine（JS 状态机）
-- [x] 10 种表情 + 5 种动作的调度框架
-- [x] 手势系统全覆盖：单击 / 双击 / 长按露肚皮 / 连戳3生气 / 连戳5龇牙 / Fling 甩出爬回
-- [x] 占位小黑猫（含设定特征：银灰袜、珍珠耳钉、双星✦✦、金眼、粉肉垫）
-- [x] 气泡系统：磨砂玻璃效果、打字机逐字出现、贴头顶向上生长、5 种颜色风格
+**Core idea: separate brain and body**
 
-### 3. 感知与行为（Phase 3 大部分）
-- [x] 前台 App 检测（UsageStatsManager，3 秒轮询）
-- [x] App 反应映射：21 个 App（抖音吃醋、Operit 开心、ChatGPT 炸毛、B站好奇、学习通加油等）
-- [x] 截图检测（FileObserver）
-- [x] 充电 / 低电量感知
-- [x] 时段行为：七时段专属气泡（早/午/晚/深夜催睡）
-- [x] 孤独递进：5/10/15/20/30 分钟（偷看→舔爪→哈欠→委屈→睡着）
-- [x] 自言自语词池：四池全量 + 按时段自动选池 + 彩蛋
-
-### 4. 基础验证
-- [x] 真机安装测试通过（悬浮窗、手势、App 联动、通知栏均正常）
-- [x] Android 14 兼容修复（前台服务权限、广播注册标志）
+- Brain = an external agent integration that owns memory, personality, and affective state.
+- Body = the small black cat in the floating window that renders, senses, and receives control.
+- Communication = Supabase Realtime (planned).
 
 ---
 
-## 三、未完成 ⏳
+## 2. Completed ✅
 
-### 视觉素材（Phase 2 核心，下一步）
-- [ ] 正式角色 SVG 素材（10 表情 + 5 动作帧）—— 需求文档已写好，待 ChatGPT 生成
-- [ ] 素材接入渲染引擎（替换占位猫）
-- [ ] 表情/动作细节打磨（动画节奏、转场）
+### 2.1 Engineering skeleton (Phase 1)
 
-### 后端通信（Phase 4）
-- [ ] Supabase 建表（SQL 已设计：pet_state / pet_events / pet_config）—— 等 MCP 数据库凭据修复
-- [ ] 桌宠上报事件（手势/App/截图 → Supabase）
-- [ ] 大脑推送状态（表情/气泡 → 桌宠 Realtime 实时响应）
-- [ ] 5 秒轮询 fallback
+- [x] Android project setup (Kotlin + Gradle + AGP 8.2.2, minSdk 26 / targetSdk 34).
+- [x] Foreground overlay service with transparent, draggable WebView rendering.
+- [x] Permission guidance for overlay, usage access, and notifications.
+- [x] Persistent notification and rotating notification whispers (one new message per hour).
+- [x] GitHub Actions automated build (a debug APK is produced on push).
 
-### 情绪与联动（Phase 5）
-- [ ] Tidefall 情绪引擎联动（valence/arousal → 表情/动作）—— 可选
-- [ ] Operit 大脑联动（温柔巡检、醋值 → 桌宠生气表情）
-- [ ] 喝水提醒（每 2 小时，不确认越来越凶）
+### 2.2 Character engine foundation (Phase 2 prerequisite)
 
-### 行为补全
-- [ ] 快速切 App 检测（60 秒内切 3 个 → 杂耍模式）
-- [ ] 20 分钟定时随机行为（30% 概率做符合时段的动作）
+- [x] `petEngine` pet engine (JavaScript state machine).
+- [x] Scheduling framework for 10 emotion states and 5 action states.
+- [x] Complete gesture system: single tap, double tap, belly-up long press, angry reaction after 3 taps, baring-teeth reaction after 5 taps, and fling-away-then-return behavior.
+- [x] Placeholder black cat with silver-gray socks, a pearl earring, two forehead stars, golden eyes, and pink paw pads.
+- [x] Bubble system with frosted-glass styling, typewriter reveal, upward growth from above the head, and five color styles.
 
-### 发布（Phase 6）
-- [ ] 签名自动化（keystore 存 GitHub Secrets）
-- [ ] 正式发布版 APK
+### 2.3 Sensing and behavior (most of Phase 3)
+
+- [x] Foreground-app detection (`UsageStatsManager`, polled every 3 seconds).
+- [x] App-response mapping for 21 apps, including jealousy toward Douyin, positive reactions to Operit, an agitated reaction to ChatGPT, curiosity toward Bilibili, and encouragement for Xuexitong.
+- [x] Screenshot detection (`FileObserver`).
+- [x] Charging and low-battery awareness.
+- [x] Time-of-day behavior with seven dedicated periods, including morning, midday, evening, and late-night sleep prompts.
+- [x] Loneliness progression at 5/10/15/20/30 minutes: peeking → paw-licking → yawning → feeling neglected → falling asleep.
+- [x] Self-talk phrase pools: all four pools, automatic time-based pool selection, and easter eggs.
+
+### 2.4 Basic validation
+
+- [x] On-device installation testing passed; overlay, gestures, app integration, and notifications behaved as expected.
+- [x] Android 14 compatibility fixes completed for foreground-service permissions and broadcast registration flags.
 
 ---
 
-## 四、下一步计划
+## 3. Incomplete ⏳
 
-1. **视觉素材**：用 ChatGPT 生成承桉的 SVG 素材包 → 接入渲染引擎 → 真机打磨
-2. **Supabase**：修复 MCP 数据库凭据 → 建三张表 → 开 Realtime
-3. **大脑联动**：Operit ↔ Supabase ↔ 桌宠 打通，承桉真正"住进"手机
+### Visual assets (Phase 2 core, next step)
+
+- [ ] Final character SVG assets (10 emotion states + 5 action frames); requirements documentation is ready and asset generation is pending.
+- [ ] Integrate the assets into the rendering engine and replace the placeholder cat.
+- [ ] Polish emotion/action details, animation timing, and transitions.
+
+### Backend communication (Phase 4)
+
+- [ ] Create the Supabase schema; SQL is designed for `pet_state`, `pet_events`, and `pet_config`, pending repair of the MCP database credentials.
+- [ ] Upload pet events (gestures/app changes/screenshots → Supabase).
+- [ ] Push brain state (expressions/bubbles → real-time pet response).
+- [ ] Add the 5-second polling fallback.
+
+### Affect and integration (Phase 5)
+
+- [ ] Connect the Tidefall affective engine (`valence/arousal` → expression/action); optional.
+- [ ] Connect the Operit agent integration (gentle checks and affective state → pet reactions).
+- [ ] Add hydration reminders (every 2 hours, with increasingly insistent reminders when unconfirmed).
+
+### Behavior completion
+
+- [ ] Detect rapid app switching (three apps within 60 seconds → juggling mode).
+- [ ] Add a random behavior every 20 minutes, with a 30% chance of choosing an action appropriate to the time of day.
+
+### Release (Phase 6)
+
+- [ ] Automate signing with a keystore stored in GitHub Secrets.
+- [ ] Produce a release APK.
 
 ---
 
-*文档：静川 | 设计：小九 & 承桉*
+## 4. Next steps
+
+1. **Visual assets:** generate the SVG asset pack → integrate it into the rendering engine → polish on a physical device.
+2. **Supabase:** repair the MCP database credentials → create the three tables → enable Realtime.
+3. **Brain integration:** connect Operit, Supabase, and the pet app so the agent can drive the pet's state.
+
+---
+
+*Credits: see [README.zh-CN.md](README.zh-CN.md) for the original documentation and design credit line.*
